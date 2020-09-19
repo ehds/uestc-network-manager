@@ -18,10 +18,10 @@ def get_challange():
     return json.loads(res)
 
 def login():
-
     import hashlib
     passwd = "value"
     a = "key"
-    cc = hmac.new(a.encode(),passwd.encode())
+    cc = hmac.new(a.encode(),passwd.encode(), digestmod=hashlib.md5)
     print(cc.hexdigest())
+    
 login()
