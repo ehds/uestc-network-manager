@@ -18,6 +18,6 @@ include_directories(
   ${OPENSSL_INCLUDE_DIR}
 	 "."
 )
-add_executable(test test.cpp)
+add_executable(test login.cpp)
 
 target_link_libraries(test z ${OPENSSL_LIBRARIES} )
