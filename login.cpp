@@ -1,5 +1,6 @@
 #define CPPHTTPLIB_ZLIB_SUPPORT
 #define CPPHTTPLIB_OPENSSL_SUPPORT
+<<<<<<< HEAD
 
 #include <time.h>
 
@@ -29,11 +30,22 @@ std::string stringfiy(const InfoList& s) {
   return ss.str();
 }
 
+=======
+#include <chrono>
+#include <httplib.h>
+#include <iostream>
+#include <memory>
+#include <regex>
+#include <time.h>
+#include <unordered_map>
+
+>>>>>>> 9e141cf (add GetChallenge)
 struct UserInfo {
   std::string username;
   std::string password;
   std::string ip;
   std::string acid;
+<<<<<<< HEAD
   std::string enc_ver;
   UserInfo(const std::string& username, const std::string& password,
            const std::string& ip, const std::string& acid,
@@ -52,6 +64,13 @@ struct UserInfo {
                      {"enc_ver", enc_ver}};
     return stringfiy(user);
   }
+=======
+  std::string enc;
+  UserInfo(const std::string& username, const std::string& password,
+           const std::string& ip, const std::string& acid,
+           const std::string& enc)
+      : username(username), password(password), ip(ip), acid(acid){};
+>>>>>>> 9e141cf (add GetChallenge)
 };
 
 class Client {
@@ -74,8 +93,13 @@ class Client {
     std::unordered_map<std::string, std::string> params;
     auto timestamp = GetTimeStamp();
     params["callback"] =
+<<<<<<< HEAD
         "jQuery112409591102916896419_" + std::to_string(timestamp);
     params["username"] = user_info.username + DOMAIN;
+=======
+        "jQuery11240889396928485537_" + std::to_string(timestamp);
+    params["username"] = user_info.username;
+>>>>>>> 9e141cf (add GetChallenge)
     params["_"] = std::to_string(timestamp);
     params["ip"] = user_info.ip;
 
