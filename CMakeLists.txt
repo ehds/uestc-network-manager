@@ -14,7 +14,7 @@ endif(NOT CMAKE_CXX_STANDARD)
 
 include_directories(
 	#	"${CMAKE_SOURCE_DIR}/thirdparty/cpp-httplib"
-	"${PROJECT_SOURCE_DIR}/thirdparty/cpp-httplib"
+    "${CMAKE_SOURCE_DIR}/thirdparty/cpp-httplib"
   ${OPENSSL_INCLUDE_DIR}
 	 "."
 )
