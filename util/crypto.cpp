@@ -1,6 +1,15 @@
-#include <assert.h>
 #include "util/crypto.h"
 
+#include <assert.h>
+#include <math.h>
+#include <openssl/hmac.h>
+#include <openssl/sha.h>
+#include <string.h>
+
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <sstream>
 
 namespace uestc {
 int HmacMD5(const char* key, unsigned int key_length, const char* input,
@@ -23,37 +32,36 @@ std::string HmacMD5(const std::string& data, const std::string& token) {
   int ret = HmacMD5(token.c_str(), token.length(), data.c_str(), data.length(),
                     mac, mac_length);
   assert(mac_length == 16);
-for (int i = 0; i < mac_length; i++) {
-    printf("%02x", mac[i]);
-  }
   char res[32];
   for (int i = 0; i < 16; i++) {
-    std::sprintf(&res[i*2], "%02x", mac[i]);
+    std::sprintf(&res[i * 2], "%02x", mac[i]);
   }
   free(mac);
   return res;
 }
 
-std::string Base64(const std::string& s) {
+std::string Base64(const std::vector<unsigned char>& s) {
   const char _PADCHAR = '=';
   const std::string _ALPHA =
       "LVoJPiCN2R8G90yg+hmFHuacZ1OWMnrsSTXkYpUq/3dlbfKwv6xztjI7DeBE45QA";
   size_t i = 0;
   int b10 = 0;
-  std::vector<std::string> x;
-  auto getbyte = [](const std::string& s, size_t i) -> int {
+
+  auto getbyte = [](const std::vector<unsigned char>& s, size_t i) -> int {
     return static_cast<int>(s[i]);
   };
   auto imax = s.size() - s.size() % 3;
   if (s.size() == 0) {
-    return s;
+    return "";
   }
+
+  std::stringstream ss;
   for (size_t i = 0; i < imax; i += 3) {
     b10 = (getbyte(s, i) << 16) | (getbyte(s, i + 1) << 8) | getbyte(s, i + 2);
-    x.emplace_back(std::to_string(_ALPHA[b10] >> 18));
-    x.emplace_back(std::to_string(_ALPHA[((b10 >> 12) & 63)]));
-    x.emplace_back(std::to_string(_ALPHA[((b10 >> 6) & 63)]));
-    x.emplace_back(std::to_string(_ALPHA[(b10 & 63)]));
+    ss << _ALPHA[b10 >> 18];
+    ss << _ALPHA[((b10 >> 12) & 63)];
+    ss << _ALPHA[((b10 >> 6) & 63)];
+    ss << _ALPHA[(b10 & 63)];
   }
   i = imax;
   char xx[4];
@@ -63,17 +71,15 @@ std::string Base64(const std::string& s) {
     xx[1] = _ALPHA[((b10 >> 12) & 63)];
     xx[2] = _PADCHAR;
     xx[3] = _PADCHAR;
-  } else {
+  } else if ((s.size() - imax) == 2) {
     b10 = (getbyte(s, i) << 16) | (getbyte(s, i + 1) << 8);
     xx[0] = _ALPHA[(b10 >> 18)];
     xx[1] = _ALPHA[((b10 >> 12) & 63)];
     xx[2] = _ALPHA[((b10 >> 6) & 63)];
     xx[3] = _PADCHAR;
   }
-  x.emplace_back(xx);
-  std::stringstream oss;
-  std::copy(x.begin(), x.end(), std::ostream_iterator<std::string>(oss, ""));
-  return oss.str();
+  ss << xx;
+  return ss.str();
 }
 
 static std::vector<char> force(const std::string& msg) {
@@ -112,37 +118,32 @@ static std::vector<unsigned char> lencode(std::vector<unsigned long> msg) {
   if (Key) {
     auto m = msg[l - 1];
     if (m < ll - 3 || m > ll) {
-      return "";
+      return {};
     }
     ll = m;
   }
   std::vector<unsigned char> encode;
   for (int i = 0; i < l; i++) {
     unsigned char cs[4];
-    cs[0] = unsigned char(msg[i] & 0xff);
-    cs[1] = unsigned char(msg[i] >> 8 & 0xff);
-    cs[2] = unsigned char(msg[i] >> 16 & 0xff);
-    cs[3] = unsigned char(msg[i] >> 24 & 0xff);
-    for(auto c:cs){encode.push_back(c);}
+    cs[0] = static_cast<unsigned char>(msg[i] & 0xff);
+    cs[1] = static_cast<unsigned char>(msg[i] >> 8 & 0xff);
+    cs[2] = static_cast<unsigned char>(msg[i] >> 16 & 0xff);
+    cs[3] = static_cast<unsigned char>(msg[i] >> 24 & 0xff);
+    for (auto c : cs) {
+      encode.push_back(c);
+    }
   }
-
-//   std::stringstream oss;
-//   std::copy(encode.begin(), encode.end(),
-//             std::ostream_iterator<std::string>(oss, ""));
-//   std::string res = oss.str();
   if (Key) {
-    return std::vector<unsigned char>(encode.begin(),encode.begin()+4*ll);
+    return std::vector<unsigned char>(encode.begin(), encode.begin() + 4 * ll);
   }
-  return res;
+  return encode;
 }
 
-std::vector<unsigned char> XEncode(const std::string& msg, const std::string& key) {
-  if (msg.empty()) return "";
+std::vector<unsigned char> XEncode(const std::string& msg,
+                                   const std::string& key) {
+  if (msg.empty()) return {};
   auto pwd = sencode<true>(msg);
   auto pwdk = sencode<false>(key);
-//   for(auto p:pwd){std::cout<<p<<std::endl;}
-//   std::cout<<"pwk"<<std::endl;
-//   for(auto p:pwdk){std::cout<<p<<std::endl;}
   if (pwdk.size() < 4) {
     for (int i = 4 - pwdk.size(); i >= 0; i--) {
       pwdk.push_back(0);
@@ -175,7 +176,18 @@ std::vector<unsigned char> XEncode(const std::string& msg, const std::string& ke
     z = pwd[n];
     q = q - 1;
   }
-//   for(auto p:pwd){std::cout<<p<<std::endl;}
   return lencode<false>(pwd);
+}
+
+std::string Sha1(const std::string& data) {
+  unsigned char obuf[20];
+  SHA1(reinterpret_cast<const unsigned char*>(data.c_str()), data.length(),
+       obuf);
+  std::cout << "dd" << std::endl;
+  char res[40];
+  for (int i = 0; i < 20; i++) {
+    std::sprintf(&res[i * 2], "%02x", obuf[i]);
+  }
+  return res;
 }
 }  // namespace uestc
