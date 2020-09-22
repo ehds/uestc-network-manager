@@ -13,11 +13,15 @@ if(NOT CMAKE_CXX_STANDARD)
 endif(NOT CMAKE_CXX_STANDARD)
 
 include_directories(
-	#	"${CMAKE_SOURCE_DIR}/thirdparty/cpp-httplib"
-    "${CMAKE_SOURCE_DIR}/thirdparty/cpp-httplib"
+	"${CMAKE_SOURCE_DIR}"
+  "${CMAKE_SOURCE_DIR}/thirdparty/cpp-httplib"
   ${OPENSSL_INCLUDE_DIR}
 	 "."
 )
-add_executable(test login.cpp)
 
-target_link_libraries(test z ${OPENSSL_LIBRARIES} )
+add_executable(login login.cpp)
+target_sources(login
+  PRIVATE
+  "util/crypto.cpp"
+)
+target_link_libraries(login z ${OPENSSL_LIBRARIES} )

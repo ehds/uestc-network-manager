@@ -1,47 +1,49 @@
-GET /cgi-bin/srun_portal?callback=jQuery11240889396928485537_1600002013738&action=login&username=sdf%40dx-uestc&password=%7BMD5%7Dc4803339968368dea4561c386a4ec255&ac_id=1&ip=113.54.201.245&chksum=d21c614cc62c2fb02fb7ef61a3cd5d947e0a9cb1&info=%7BSRBX1%7DlZevPeh3SE2RNUDmqEuj%2BdrAfLMw5fpBlfs7FVNg3xPYPDhea%2FRTbMCEsltXzPeZmO7OSqp%2FmfspcRlhlzPPwONXnRJg%2BP1VAzaHex5JLF9FVLGCmSjWgwX2tmlH6lifkhuNBTdFDiZ%3D&n=200&type=1&os=Mac+OS&name=Macintosh&double_stack=0&_=1600002013741 HTTP/1.1
-Host: aaa.uestc.edu.cn
+GET /cgi-bin/srun_portal?callback=jQuery112409798865241401942_1600776658863&action=login&username=sdf%40dx-uestc&password=%7BMD5%7D1ec90f57985b07419d463199104022bd&ac_id=1&ip=10.252.183.69&chksum=247c9bb9ccb32a24f736f87026f316d901cfd646&info=%7BSRBX1%7Dk54A5YOs5dsUm3ZuCGv9%2BtDwYDZ8b%2B6%2FYxACxfz44rXF7Uyvxj%2BT7RP2vglMUC34d91d5IkfZwFv4Y6l%2FcUejfrtdZMdPDheXJyfNG7uw7Qz4DHo9wQUoVaOuH%2ByScI7hSd3jYe4VtD%3D&n=200&type=1&os=Mac+OS&name=Macintosh&double_stack=0&_=1600776658866 HTTP/1.1
+Host: 10.253.0.237
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:80.0) Gecko/20100101 Firefox/80.0
 Accept: text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01
 Accept-Language: zh-CN,en-US;q=0.7,en;q=0.3
 Accept-Encoding: gzip, deflate
 X-Requested-With: XMLHttpRequest
 Connection: keep-alive
-Referer: http://aaa.uestc.edu.cn/srun_portal_pc?ac_id=1&theme=dx
-Cookie: lang=zh-CN; UM_distinctid=173c7e1cf60161-0963ec431d2edb8-4b5a67-13c680-173c7e1cf61b98; admin:language=cn
+Referer: http://10.253.0.237/srun_portal_pc?ac_id=1&theme=dx
+Cookie: lang=zh-CN; PHPSESSID_8900=7srs3lnrm2btqc430u5nif68l5; _csrf=13584168daee0cd0b19b57f78c36a99d102049da4f6427f2ecbb770b1b02186ba%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22l4XPtuTmsDkueQG4DMVvVYImHk8l0WcU%22%3B%7D
 
-/cgi-bin/srun_portal?
-callback: jQuery11240889396928485537_1600002013738
-action: login
-username: sdf@dx-uestc
-password: {MD5}c4803339968368dea4561c386a4ec255
-ac_id: 1
-ip: 113.54.201.245
-chksum: d21c614cc62c2fb02fb7ef61a3cd5d947e0a9cb1
-info: {SRBX1}lZevPeh3SE2RNUDmqEuj+drAfLMw5fpBlfs7FVNg3xPYPDhea/RTbMCEsltXzPeZmO7OSqp/mfspcRlhlzPPwONXnRJg+P1VAzaHex5JLF9FVLGCmSjWgwX2tmlH6lifkhuNBTdFDiZ: 
-n: 200
-type: 1
-os: Mac+OS
-name: Macintosh
-double_stack: 0
-_: 1600002013741
+callback=jQuery112409798865241401942_1600776658863
+username=sdf@dx-uestc
+ip=10.252.183.69
+_=1600776658865
 
 
+jQuery112409798865241401942_1600776658863({"client_ip":"10.252.183.69","ecode":"","error":"login_error","error_msg":"INFO Error锛宔rr_code=2","online_ip":"10.252.183.69","res":"login_error","srun_ver":"SRunCGIAuthIntfSvr V1.18 B20181212","st":1600776745})
 
-GET /cgi-bin/get_challenge?callback=jQuery11240889396928485537_1600002013738&username=sdf%40dx-uestc&ip=113.54.201.245&_=1600002013740 HTTP/1.1
-Host: aaa.uestc.edu.cn
+
+GET /cgi-bin/srun_portal?callback=jQuery112409798865241401942_1600776658863&action=login&username=sdf%40dx-uestc&password=%7BMD5%7D1ec90f57985b07419d463199104022bd&ac_id=1&ip=10.252.183.69&chksum=247c9bb9ccb32a24f736f87026f316d901cfd646&info=%7BSRBX1%7Dk54A5YOs5dsUm3ZuCGv9%2BtDwYDZ8b%2B6%2FYxACxfz44rXF7Uyvxj%2BT7RP2vglMUC34d91d5IkfZwFv4Y6l%2FcUejfrtdZMdPDheXJyfNG7uw7Qz4DHo9wQUoVaOuH%2ByScI7hSd3jYe4VtD%3D&n=200&type=1&os=Mac+OS&name=Macintosh&double_stack=0&_=1600776658866 HTTP/1.1
+Host: 10.253.0.237
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:80.0) Gecko/20100101 Firefox/80.0
 Accept: text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01
 Accept-Language: zh-CN,en-US;q=0.7,en;q=0.3
 Accept-Encoding: gzip, deflate
 X-Requested-With: XMLHttpRequest
 Connection: keep-alive
-Referer: http://aaa.uestc.edu.cn/srun_portal_pc?ac_id=1&theme=dx
-Cookie: lang=zh-CN; UM_distinctid=173c7e1cf60161-0963ec431d2edb8-4b5a67-13c680-173c7e1cf61b98; admin:language=cn
+Referer: http://10.253.0.237/srun_portal_pc?ac_id=1&theme=dx
+Cookie: lang=zh-CN; PHPSESSID_8900=7srs3lnrm2btqc430u5nif68l5; _csrf=13584168daee0cd0b19b57f78c36a99d102049da4f6427f2ecbb770b1b02186ba%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22l4XPtuTmsDkueQG4DMVvVYImHk8l0WcU%22%3B%7D
 
 
+callback=jQuery112409798865241401942_1600776658863
+action=login
+username=sdf%40dx-uestc
+password=%7BMD5%7D1ec90f57985b07419d463199104022bd
+ac_id=1
+ip=10.252.183.69
+chksum=247c9bb9ccb32a24f736f87026f316d901cfd646
+info=%7BSRBX1%7Dk54A5YOs5dsUm3ZuCGv9%2BtDwYDZ8b%2B6%2FYxACxfz44rXF7Uyvxj%2BT7RP2vglMUC34d91d5IkfZwFv4Y6l%2FcUejfrtdZMdPDheXJyfNG7uw7Qz4DHo9wQUoVaOuH%2ByScI7hSd3jYe4VtD%3D
+n=200
+type=1
+os=Mac+OS
+name=Macintosh
+double_stack=0
+_=1600776658866
 
-/cgi-bin/get_challenge?
-callback: jQuery11240889396928485537_1600002013738
-username: sdf@dx-uestc
-ip: 113.54.201.245
-_: 1600002013740 HTTP/1.1
+
+jQuery112409798865241401942_1600776658863({"client_ip":"10.252.183.69","ecode":"","error":"login_error","error_msg":"INFO Error锛宔rr_code=2","online_ip":"10.252.183.69","res":"login_error","srun_ver":"SRunCGIAuthIntfSvr V1.18 B20181212","st":1600776745})

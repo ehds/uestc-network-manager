@@ -5,10 +5,10 @@
 #include <sstream>   //stringstream
 #include <vector>    //vector
 
-const char _PADCHAR = '=';
-const std::string _ALPHA =
-    "LVoJPiCN2R8G90yg+hmFHuacZ1OWMnrsSTXkYpUq/3dlbfKwv6xztjI7DeBE45QA";
 std::string get_base64(const std::string& s) {
+  const char _PADCHAR = '=';
+  const std::string _ALPHA =
+      "LVoJPiCN2R8G90yg+hmFHuacZ1OWMnrsSTXkYpUq/3dlbfKwv6xztjI7DeBE45QA";
   size_t i = 0;
   int b10 = 0;
   std::vector<std::string> x;
