@@ -56,17 +56,17 @@ std::string Base64(const std::vector<unsigned char>& s) {
   }
 
   std::stringstream ss;
-  for (size_t i = 0; i < imax; i += 3) {
+  for (i = 0; i < imax; i += 3) {
     b10 = (getbyte(s, i) << 16) | (getbyte(s, i + 1) << 8) | getbyte(s, i + 2);
     ss << _ALPHA[b10 >> 18];
     ss << _ALPHA[((b10 >> 12) & 63)];
     ss << _ALPHA[((b10 >> 6) & 63)];
     ss << _ALPHA[(b10 & 63)];
   }
-  i = imax;
+
   char xx[4];
   if ((s.size() - imax) == 1) {
-    b10 = (getbyte(s, i) << 16) | (getbyte(s, i + 1) << 8);
+    b10 = (getbyte(s, i) << 16);
     xx[0] = _ALPHA[(b10 >> 18)];
     xx[1] = _ALPHA[((b10 >> 12) & 63)];
     xx[2] = _PADCHAR;

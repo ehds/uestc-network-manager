@@ -1,5 +1,6 @@
 #define CPPHTTPLIB_ZLIB_SUPPORT
 #define CPPHTTPLIB_OPENSSL_SUPPORT
+
 #include <time.h>
 
 #include <chrono>
@@ -10,9 +11,9 @@
 
 #include "httplib.h"
 #include "util/crypto.h"
-
+namespace uestc {
 using InfoList = std::vector<std::pair<std::string, std::string> >;
-const std::string ENC_VER= "srun_bx1";
+const std::string ENC_VER = "srun_bx1";
 const std::string DOMAIN = "@dx-uestc";
 constexpr int N = 200;
 constexpr int TYPE = 1;
@@ -43,7 +44,7 @@ struct UserInfo {
         acid(acid),
         enc_ver(enc_ver){};
 
-  std::string dump() const{
+  std::string dump() const {
     InfoList user = {{"username", username},
                      {"password", password},
                      {"ip", ip},
@@ -73,8 +74,8 @@ class Client {
     std::unordered_map<std::string, std::string> params;
     auto timestamp = GetTimeStamp();
     params["callback"] =
-        "jQuery11240889396928485537_" + std::to_string(timestamp);
-    params["username"] = user_info.username;
+        "jQuery112409591102916896419_" + std::to_string(timestamp);
+    params["username"] = user_info.username + DOMAIN;
     params["_"] = std::to_string(timestamp);
     params["ip"] = user_info.ip;
 
@@ -97,13 +98,14 @@ class Client {
     }
     return false;
   }
-  
+
   bool IsAccessInternet() {
     std::vector<std::string> hosts{"https://www.baidu.com",
                                    "https://www.163.com", "https://sina.com"};
     for (auto host : hosts) {
       auto client = httplib::Client(host.c_str());
       client.set_follow_location(true);
+      client.set_connection_timeout(0, 300000);
       if (auto res = client.Get("/")) {
         if (res->status == 200 || res->status == 301) {
           // we can access one of the hosts indicated that we connect to the
@@ -115,52 +117,62 @@ class Client {
     return false;
   }
 
-  std::string CheckSum(const std::string& data) {
-    return uestc::Sha1(data);
-  }
+  std::string CheckSum(const std::string& data) { return uestc::Sha1(data); }
   std::string Info(const UserInfo& u, const std::string& token) {
-    return uestc::Base64(uestc::XEncode(u.dump(), token));
+    std::cout << u.username << std::endl;
+    return "{SRBX1}" + uestc::Base64(uestc::XEncode(u.dump(), token));
   }
   bool AuthNetwork(UserInfo& u) {
-    if(IsAccessInternet()){
-      std::cout<<"You have authorized this network, please logout before login"<<std::endl;
+    if (IsAccessInternet()) {
+      std::cout
+          << "You have authorized this network, please logout before login"
+          << std::endl;
       return true;
     }
+
     std::string challenge;
     auto ret = GetChallenge(u, challenge);
     if (!ret) {
+      std::cout << "get challenge failed" << std::endl;
       return false;
     }
+
+    u.username = u.username + DOMAIN;
     auto i = Info(u, challenge);
     auto hmd5 = uestc::HmacMD5(u.password, challenge);
-    std::string username = u.username + DOMAIN; 
-    std::string check_str = challenge+username;
-    check_str+=challenge+hmd5;
-    check_str+=challenge+u.ip;
-    check_str+=challenge+std::to_string(N);
-    check_str+=challenge+std::to_string(TYPE);
-    check_str+=challenge+i;
-    // mock os
-    InfoList os = {{"device","Linux"},{"platform","Linux"}};
-    httplib::Params params{
-      {"action","login"},
-      {"username",username},
-      {"password","{MD5}"+hmd5},
-      {"ac_id", u.acid},
-      {"ip",u.ip},
-      {"chksum", CheckSum(check_str)},
-      {"info",i},
-      {"n",std::to_string(N)},
-      {"type",std::to_string(TYPE)},
-      {"os",os[0].second},
-      {"name",os[1].second},
-      {"double_stack","0"}
-    };
-    if(auto res = client_ -> Post("/cgi-bin/srun_portal", params)){
-      if(res->status == 200 && IsAccessInternet()){
 
+    std::string check_str = challenge + u.username;
+    check_str += challenge + hmd5;
+    check_str += challenge + u.acid;
+    check_str += challenge + u.ip;
+    check_str += challenge + std::to_string(N);
+    check_str += challenge + std::to_string(TYPE);
+    check_str += challenge + i;
+
+    // mock os
+    InfoList os = {{"device", "Linux"}, {"platform", "Linux"}};
+
+    httplib::Params params{{"action", "login"},
+                           {"username", u.username},
+                           {"password", "{MD5}" + hmd5},
+                           {"ac_id", u.acid},
+                           {"ip", u.ip},
+                           {"chksum", CheckSum(check_str)},
+                           {"info", i},
+                           {"n", std::to_string(N)},
+                           {"type", std::to_string(TYPE)},
+                           {"os", os[0].second},
+                           {"name", os[1].second},
+                           {"double_stack", "0"}};
+    if (auto res = client_->Post("/cgi-bin/srun_portal", params)) {
+      if (res->status == 200 && IsAccessInternet()) {
+        std::cout << "Login status:" << res->body << std::endl;
         return true;
+      } else {
+        std::cout << res->status << res->body << std::endl;
       }
+    } else {
+      std::cout << res.error() << std::endl;
     }
     return false;
   }
@@ -168,13 +180,14 @@ class Client {
  private:
   std::string host_;
   std::unique_ptr<httplib::Client> client_;
-};
 
-int main() { 
-  Client c("http://aaa.uestc.edu.cn");
-  UserInfo u("201822080901", "hds1996430", "", "1", ENC_VER);
+};  // Class Client
+}  // namespace uestc
+
+
+int main() {
+  uestc::Client c("http://aaa.uestc.edu.cn");
+  uestc::UserInfo u("username", "password", "113.54.156.0", "1", uestc::ENC_VER);
   auto res = c.AuthNetwork(u);
-  return 0; 
-  
-  
-  }
+  return 0;
+}
