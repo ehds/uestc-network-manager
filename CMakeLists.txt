@@ -13,10 +13,10 @@ if(NOT CMAKE_CXX_STANDARD)
 endif(NOT CMAKE_CXX_STANDARD)
 
 include_directories(
+  "."
 	"${CMAKE_SOURCE_DIR}"
   "${CMAKE_SOURCE_DIR}/thirdparty/cpp-httplib"
   ${OPENSSL_INCLUDE_DIR}
-	 "."
 )
 
 add_executable(login login.cpp)

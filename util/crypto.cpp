@@ -183,7 +183,6 @@ std::string Sha1(const std::string& data) {
   unsigned char obuf[20];
   SHA1(reinterpret_cast<const unsigned char*>(data.c_str()), data.length(),
        obuf);
-  std::cout << "dd" << std::endl;
   char res[40];
   for (int i = 0; i < 20; i++) {
     std::sprintf(&res[i * 2], "%02x", obuf[i]);
