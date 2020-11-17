@@ -64,21 +64,22 @@ std::string Base64(const std::vector<unsigned char>& s) {
     ss << _ALPHA[(b10 & 63)];
   }
 
-  char xx[4];
-  if ((s.size() - imax) == 1) {
-    b10 = (getbyte(s, i) << 16);
-    xx[0] = _ALPHA[(b10 >> 18)];
-    xx[1] = _ALPHA[((b10 >> 12) & 63)];
-    xx[2] = _PADCHAR;
-    xx[3] = _PADCHAR;
-  } else if ((s.size() - imax) == 2) {
-    b10 = (getbyte(s, i) << 16) | (getbyte(s, i + 1) << 8);
-    xx[0] = _ALPHA[(b10 >> 18)];
-    xx[1] = _ALPHA[((b10 >> 12) & 63)];
-    xx[2] = _ALPHA[((b10 >> 6) & 63)];
-    xx[3] = _PADCHAR;
+  switch (s.size() - imax) {
+    case 1:
+      b10 = (getbyte(s, i) << 16);
+      ss << _ALPHA[(b10 >> 18)];
+      ss << _ALPHA[((b10 >> 12) & 63)];
+      ss << _PADCHAR;
+      ss << _PADCHAR;
+      break;
+    case 2:
+      b10 = (getbyte(s, i) << 16) | (getbyte(s, i + 1) << 8);
+      ss << _ALPHA[(b10 >> 18)];
+      ss << _ALPHA[((b10 >> 12) & 63)];
+      ss << _ALPHA[((b10 >> 6) & 63)];
+      ss << _PADCHAR;
+      break;
   }
-  ss << xx;
   return ss.str();
 }
 

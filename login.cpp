@@ -163,7 +163,8 @@ class Client {
                            {"type", std::to_string(TYPE)},
                            {"os", os[0].second},
                            {"name", os[1].second},
-                           {"double_stack", "0"}};
+                           {"double_stack", "0"},
+                           {"_", std::to_string(GetTimeStamp())}};
     if (auto res = client_->Post("/cgi-bin/srun_portal", params)) {
       if (res->status == 200 && IsAccessInternet()) {
         std::cout << "Login status:" << res->body << std::endl;
@@ -184,10 +185,10 @@ class Client {
 };  // Class Client
 }  // namespace uestc
 
-
 int main() {
   uestc::Client c("http://aaa.uestc.edu.cn");
-  uestc::UserInfo u("username", "password", "113.54.156.0", "1", uestc::ENC_VER);
+  uestc::UserInfo u("username", "password", "113.54.156.0", "1",
+                    uestc::ENC_VER);
   auto res = c.AuthNetwork(u);
   return 0;
 }
