@@ -187,8 +187,13 @@ class Client {
 
 int main() {
   uestc::Client c("http://aaa.uestc.edu.cn");
-  uestc::UserInfo u("username", "password", "113.54.156.0", "1",
-                    uestc::ENC_VER);
-  auto res = c.AuthNetwork(u);
+  uestc::UserInfo u("username", "password", "", "1", uestc::ENC_VER);
+  while (true)
+  {
+    auto res = c.AuthNetwork(u);
+    // 1s
+    usleep(10*1000000);
+    std::cout<<res<<std::endl;
+  }
   return 0;
 }
