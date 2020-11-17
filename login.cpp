@@ -1,17 +1,17 @@
+#include <string>
 #define CPPHTTPLIB_ZLIB_SUPPORT
 #define CPPHTTPLIB_OPENSSL_SUPPORT
-<<<<<<< HEAD
-
-#include <time.h>
 
 #include <chrono>
 #include <iostream>
 #include <memory>
 #include <regex>
+#include <time.h>
 #include <unordered_map>
 
-#include "httplib.h"
 #include "util/crypto.h"
+
+#include "httplib.h"
 namespace uestc {
 using InfoList = std::vector<std::pair<std::string, std::string> >;
 const std::string ENC_VER = "srun_bx1";
@@ -30,22 +30,11 @@ std::string stringfiy(const InfoList& s) {
   return ss.str();
 }
 
-=======
-#include <chrono>
-#include <httplib.h>
-#include <iostream>
-#include <memory>
-#include <regex>
-#include <time.h>
-#include <unordered_map>
-
->>>>>>> 9e141cf (add GetChallenge)
 struct UserInfo {
   std::string username;
   std::string password;
   std::string ip;
   std::string acid;
-<<<<<<< HEAD
   std::string enc_ver;
   UserInfo(const std::string& username, const std::string& password,
            const std::string& ip, const std::string& acid,
@@ -64,13 +53,6 @@ struct UserInfo {
                      {"enc_ver", enc_ver}};
     return stringfiy(user);
   }
-=======
-  std::string enc;
-  UserInfo(const std::string& username, const std::string& password,
-           const std::string& ip, const std::string& acid,
-           const std::string& enc)
-      : username(username), password(password), ip(ip), acid(acid){};
->>>>>>> 9e141cf (add GetChallenge)
 };
 
 class Client {
@@ -93,13 +75,8 @@ class Client {
     std::unordered_map<std::string, std::string> params;
     auto timestamp = GetTimeStamp();
     params["callback"] =
-<<<<<<< HEAD
-        "jQuery112409591102916896419_" + std::to_string(timestamp);
+        "jQuery112408773089874935751_" + std::to_string(timestamp);
     params["username"] = user_info.username + DOMAIN;
-=======
-        "jQuery11240889396928485537_" + std::to_string(timestamp);
-    params["username"] = user_info.username;
->>>>>>> 9e141cf (add GetChallenge)
     params["_"] = std::to_string(timestamp);
     params["ip"] = user_info.ip;
 
@@ -164,7 +141,6 @@ class Client {
     u.username = u.username + DOMAIN;
     auto i = Info(u, challenge);
     auto hmd5 = uestc::HmacMD5(u.password, challenge);
-
     std::string check_str = challenge + u.username;
     check_str += challenge + hmd5;
     check_str += challenge + u.acid;
@@ -211,8 +187,7 @@ class Client {
 
 int main() {
   uestc::Client c("http://aaa.uestc.edu.cn");
-  uestc::UserInfo u("username", "password", "113.54.156.0", "1",
-                    uestc::ENC_VER);
+  uestc::UserInfo u("username", "passowrd", "", "1", uestc::ENC_VER);
   auto res = c.AuthNetwork(u);
   return 0;
 }

@@ -18,10 +18,6 @@ include_directories(
   "${CMAKE_SOURCE_DIR}/thirdparty/cpp-httplib"
   ${OPENSSL_INCLUDE_DIR}
 )
-<<<<<<< HEAD
-=======
-add_executable(test login.cpp)
->>>>>>> 9e141cf (add GetChallenge)
 
 add_executable(login login.cpp)
 target_sources(login
