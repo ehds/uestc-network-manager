@@ -45,11 +45,7 @@ std::string Base64(const std::vector<unsigned char>& s) {
   const std::string _ALPHA =
       "LVoJPiCN2R8G90yg+hmFHuacZ1OWMnrsSTXkYpUq/3dlbfKwv6xztjI7DeBE45QA";
   size_t i = 0;
-<<<<<<< HEAD
-  int b10 = 0;
-=======
   long b10 = 0;
->>>>>>> d6f5af3 (fix base64 encode bug)
 
   auto getbyte = [](const std::vector<unsigned char>& s, size_t i) -> int {
     return static_cast<int>(s[i]);
