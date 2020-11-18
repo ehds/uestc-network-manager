@@ -1,3 +1,8 @@
+// Copyright (c) 2020 The UESTC-Networkmanager Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style license that can be
+// found in the LICENSE file. See the AUTHORS file for names of contributors.
+//
+// Authors: ehds(ds.he@foxmail.com)
 #define CPPHTTPLIB_ZLIB_SUPPORT
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 
