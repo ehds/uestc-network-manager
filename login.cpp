@@ -10,6 +10,7 @@
 #include <unordered_map>
 
 #include "httplib.h"
+#include "util/config.h"
 #include "util/crypto.h"
 namespace uestc {
 using InfoList = std::vector<std::pair<std::string, std::string> >;
@@ -38,7 +39,7 @@ struct UserInfo {
   UserInfo(const std::string& username, const std::string& password,
            const std::string& ip, const std::string& acid,
            const std::string& enc_ver)
-      : username(username),
+      : username(username + DOMAIN),
         password(password),
         ip(ip),
         acid(acid),
@@ -75,7 +76,7 @@ class Client {
     auto timestamp = GetTimeStamp();
     params["callback"] =
         "jQuery112409591102916896419_" + std::to_string(timestamp);
-    params["username"] = user_info.username + DOMAIN;
+    params["username"] = user_info.username;
     params["_"] = std::to_string(timestamp);
     params["ip"] = user_info.ip;
 
@@ -124,9 +125,8 @@ class Client {
   }
   bool AuthNetwork(UserInfo& u) {
     if (IsAccessInternet()) {
-      std::cout
-          << "You have authorized this network, please logout before login"
-          << std::endl;
+      std::cout << "You have authorized this network, not need to login"
+                << std::endl;
       return true;
     }
 
@@ -137,7 +137,6 @@ class Client {
       return false;
     }
 
-    u.username = u.username + DOMAIN;
     auto i = Info(u, challenge);
     auto hmd5 = uestc::HmacMD5(u.password, challenge);
 
@@ -186,14 +185,18 @@ class Client {
 }  // namespace uestc
 
 int main() {
-  uestc::Client c("http://aaa.uestc.edu.cn");
-  uestc::UserInfo u("username", "password", "", "1", uestc::ENC_VER);
-  while (true)
-  {
-    auto res = c.AuthNetwork(u);
-    // 1s
-    usleep(10*1000000);
-    std::cout<<res<<std::endl;
+  uestc::Config config{};
+  uestc::Client client("http://aaa.uestc.edu.cn");
+
+  uestc::UserInfo user(config.get("username"), config.get("password"), "", "1",
+                       uestc::ENC_VER);
+  int interval = std::atoi(config.get("interval").c_str());
+  if (interval <= 0) {
+    interval = 5;
+  };
+  while (true) {
+    auto res = client.AuthNetwork(user);
+    usleep(interval * 1000000);
   }
   return 0;
 }

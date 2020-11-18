@@ -23,6 +23,7 @@ add_executable(${PROJECT_NAME} login.cpp)
 target_sources(${PROJECT_NAME}
   PRIVATE
   "util/crypto.cpp"
+  "util/config.cpp"
 )
 target_link_libraries(${PROJECT_NAME} z ${OPENSSL_LIBRARIES} )
 
@@ -47,3 +48,4 @@ configure_file(unit/uestcnetwork.service.cmake uestcnetwork.service)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 install(FILES   ${CMAKE_CURRENT_BINARY_DIR}/uestcnetwork.service DESTINATION lib/systemd/system     COMPONENT init)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/conf/user.conf DESTINATION /etc/uestc_networkmanager COMPONENT configuration)
