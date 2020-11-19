@@ -19,8 +19,8 @@
 #include "util/crypto.h"
 namespace uestc {
 using InfoList = std::vector<std::pair<std::string, std::string> >;
-const std::string ENC_VER = "srun_bx1";
-const std::string DOMAIN = "@dx-uestc";
+const std::string kEncVer= "srun_bx1";
+const std::string kDomain= "@dx-uestc";
 constexpr int N = 200;
 constexpr int TYPE = 1;
 
@@ -44,7 +44,7 @@ struct UserInfo {
   UserInfo(const std::string& username, const std::string& password,
            const std::string& ip, const std::string& acid,
            const std::string& enc_ver)
-      : username(username + DOMAIN),
+      : username(username + kDomain),
         password(password),
         ip(ip),
         acid(acid),
@@ -194,7 +194,7 @@ int main() {
   uestc::Client client("http://aaa.uestc.edu.cn");
 
   uestc::UserInfo user(config.get("username"), config.get("password"), "", "1",
-                       uestc::ENC_VER);
+                       uestc::kEncVer);
   int interval = std::atoi(config.get("interval").c_str());
   if (interval <= 0) {
     interval = 5;

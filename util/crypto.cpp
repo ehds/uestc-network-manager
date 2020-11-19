@@ -160,7 +160,7 @@ std::vector<unsigned char> XEncode(const std::string& msg,
   long y = pwd[0];
   long c = 0x86014019 | 0x183639A0;
   long m = 0, e = 0, p = 0, d = 0;
-  auto q = std::floor(6 + 52 / (n + 1));
+  auto q = floor(6 + 52 / (n + 1));
   while (q > 0) {
     d = d + c & (0x8CE0D9BF | 0x731F2640);
     e = d >> 2 & 3;
