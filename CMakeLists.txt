@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 # Keep the version below in sync with the one in db.h
-project(uestc_login VERSION 0.0.1 LANGUAGES C CXX)
+project(uestcnetwork VERSION 0.0.1 LANGUAGES C CXX)
 if (APPLE)
     # This is a bug in CMake that causes it to prefer the system version over
     # the one in the specified ROOT folder.
@@ -20,7 +20,7 @@ endif(NOT CMAKE_CXX_STANDARD)
 
 include_directories(
   "."
-	"${CMAKE_SOURCE_DIR}"
+  "${CMAKE_SOURCE_DIR}"
   "${CMAKE_SOURCE_DIR}/thirdparty/cpp-httplib"
   ${OPENSSL_INCLUDE_DIR}
 )
@@ -31,7 +31,7 @@ target_sources(${PROJECT_NAME}
   "util/crypto.cpp"
   "util/config.cpp"
 )
-target_link_libraries(${PROJECT_NAME} z ${OPENSSL_LIBRARIES} )
+target_link_libraries(${PROJECT_NAME} ${OPENSSL_LIBRARIES} )
 
 set(SYSTEMD_SERVICE_TYPE_DOCSTRING "The value used as the Type= in the systemd unit file.")
 set(WATCHDOG_SEC_DOCSTRING "The value used as WatchdogSec= in the systemd unit file.")

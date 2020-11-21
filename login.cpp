@@ -3,7 +3,6 @@
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 //
 // Authors: ehds(ds.he@foxmail.com)
-#define CPPHTTPLIB_ZLIB_SUPPORT
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 
 #include <time.h>
@@ -19,8 +18,8 @@
 #include "util/crypto.h"
 namespace uestc {
 using InfoList = std::vector<std::pair<std::string, std::string> >;
-const std::string kEncVer= "srun_bx1";
-const std::string kDomain= "@dx-uestc";
+const std::string kEncVer = "srun_bx1";
+const std::string kDomain = "@dx-uestc";
 constexpr int N = 200;
 constexpr int TYPE = 1;
 
@@ -68,11 +67,10 @@ class Client {
   };
   Client(const Client& client) = delete;
   Client(Client&& client) = delete;
-  std::time_t GetTimeStamp() {
+  int64_t GetTimeStamp() {
     auto tp = std::chrono::time_point_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now());
-    std::time_t timestamp = tp.time_since_epoch().count();
-    return timestamp;
+    return tp.time_since_epoch().count();
   }
 
   bool GetChallenge(UserInfo& user_info, std::string& result) {
@@ -120,12 +118,12 @@ class Client {
         }
       }
     }
+    std::cout << "can not access network" << std::endl;
     return false;
   }
 
   std::string CheckSum(const std::string& data) { return uestc::Sha1(data); }
   std::string Info(const UserInfo& u, const std::string& token) {
-    std::cout << u.username << std::endl;
     return "{SRBX1}" + uestc::Base64(uestc::XEncode(u.dump(), token));
   }
   bool AuthNetwork(UserInfo& u) {
@@ -134,7 +132,6 @@ class Client {
                 << std::endl;
       return true;
     }
-
     std::string challenge;
     auto ret = GetChallenge(u, challenge);
     if (!ret) {
@@ -143,8 +140,7 @@ class Client {
     }
 
     auto i = Info(u, challenge);
-    auto hmd5 = uestc::HmacMD5(u.password, challenge);
-
+    std::string hmd5 = uestc::HmacMD5(u.password, challenge);
     std::string check_str = challenge + u.username;
     check_str += challenge + hmd5;
     check_str += challenge + u.acid;
@@ -169,6 +165,9 @@ class Client {
                            {"name", os[1].second},
                            {"double_stack", "0"},
                            {"_", std::to_string(GetTimeStamp())}};
+    for (auto item : params) {
+      std::cout << item.first << ":" << item.second << std::endl;
+    }
     if (auto res = client_->Post("/cgi-bin/srun_portal", params)) {
       if (res->status == 200 && IsAccessInternet()) {
         std::cout << "Login status:" << res->body << std::endl;
@@ -200,7 +199,7 @@ int main() {
     interval = 5;
   };
   while (true) {
-    auto res = client.AuthNetwork(user);
+    client.AuthNetwork(user);
     usleep(interval * 1000000);
   }
   return 0;
