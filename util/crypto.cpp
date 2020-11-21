@@ -9,13 +9,13 @@
 #include <math.h>
 #include <openssl/hmac.h>
 #include <openssl/sha.h>
+#include <stdint.h>
 #include <string.h>
 
 #include <algorithm>
 #include <iostream>
 #include <iterator>
 #include <sstream>
-
 namespace uestc {
 int HmacMD5(const char* key, unsigned int key_length, const char* input,
             unsigned int input_length, unsigned char*& output,
@@ -39,10 +39,15 @@ std::string HmacMD5(const std::string& data, const std::string& token) {
   assert(mac_length == 16);
   char res[32];
   for (int i = 0; i < 16; i++) {
+    std::cout << std::sprintf(&res[i * 2], "%02x", mac[i]) << std::endl;
     std::sprintf(&res[i * 2], "%02x", mac[i]);
   }
   free(mac);
-  return res;
+  std::stringstream ss;
+  for (int i = 0; i < 32; i++) {
+    ss << res[i];
+  }
+  return ss.str();
 }
 
 std::string Base64(const std::vector<unsigned char>& s) {
@@ -104,9 +109,9 @@ int ordat(const std::string& msg, int idx) {
 }
 
 template <bool Key>
-static std::vector<unsigned long> sencode(const std::string& msg) {
+static std::vector<uint64_t> sencode(const std::string& msg) {
   size_t l = msg.size();
-  std::vector<unsigned long> pwd;
+  std::vector<uint64_t> pwd;
   for (int i = 0; i < l; i += 4) {
     pwd.push_back(ordat(msg, i) | ordat(msg, i + 1) << 8 |
                   ordat(msg, i + 2) << 16 | ordat(msg, i + 3) << 24);
@@ -118,7 +123,7 @@ static std::vector<unsigned long> sencode(const std::string& msg) {
 }
 
 template <bool Key>
-static std::vector<unsigned char> lencode(std::vector<unsigned long> msg) {
+static std::vector<unsigned char> lencode(std::vector<uint64_t> msg) {
   size_t l = msg.size();
   size_t ll = (l - 1) << 2;
   if (Key) {
@@ -151,15 +156,15 @@ std::vector<unsigned char> XEncode(const std::string& msg,
   auto pwd = sencode<true>(msg);
   auto pwdk = sencode<false>(key);
   if (pwdk.size() < 4) {
-    for (int i = 4 - pwdk.size(); i >= 0; i--) {
+    for (size_t i = 4 - pwdk.size(); i >= 0; i--) {
       pwdk.push_back(0);
     }
   }
-  long n = pwd.size() - 1;
-  long z = pwd[n];
-  long y = pwd[0];
-  long c = 0x86014019 | 0x183639A0;
-  long m = 0, e = 0, p = 0, d = 0;
+  int64_t n = pwd.size() - 1;
+  int64_t z = pwd[n];
+  int64_t y = pwd[0];
+  int64_t c = 0x86014019 | 0x183639A0;
+  int64_t m = 0, e = 0, p = 0, d = 0;
   auto q = floor(6 + 52 / (n + 1));
   while (q > 0) {
     d = d + c & (0x8CE0D9BF | 0x731F2640);
@@ -193,6 +198,10 @@ std::string Sha1(const std::string& data) {
   for (int i = 0; i < 20; i++) {
     std::sprintf(&res[i * 2], "%02x", obuf[i]);
   }
-  return res;
+  std::stringstream ss;
+  for (int i = 0; i < 40; i++) {
+    ss << res[i];
+  }
+  return ss.str();
 }
 }  // namespace uestc
