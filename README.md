@@ -1,5 +1,5 @@
 # UESTC network login
-![example workflow name](https://github.com/ehds/uestc_network_manager/workflows/C/C++%20CI/badge.svg)
+[![example workflow name](https://github.com/ehds/uestc_network_manager/workflows/C/C++%20CI/badge.svg)](https://github.com/ehds/uestc_network_manager/actions)
 
 # Linux
 ## Build
@@ -19,4 +19,4 @@ systemctl enable uestcnetwork
 systemctl start uestcnetwork
 ```
 
-**Windows and MacOS comming soon**
+**Windows、 MacOS and OpenWrt comming soon**
