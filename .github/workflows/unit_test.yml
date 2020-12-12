@@ -1,0 +1,16 @@
+name: C/C++ CI
+
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: dependencies
+      run: apt -y install cmake libssl-dev
+    - name: cmake
+      run: cmake .
+    - name: make
+      run: make
+    - name: ctest
+      run: ctest --verbose
