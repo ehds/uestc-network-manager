@@ -6,6 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
     - name: dependencies
       run: sudo apt -y install cmake libssl-dev
     - name: cmake
