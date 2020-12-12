@@ -107,7 +107,7 @@ class Client {
     std::vector<std::string> hosts{"https://www.baidu.com",
                                    "https://www.163.com", "https://sina.com"};
     for (auto host : hosts) {
-      auto client = httplib::Client(host.c_str());
+      httplib::Client client("https://www.baidu.com");
       client.set_follow_location(true);
       client.set_connection_timeout(0, 300000);
       if (auto res = client.Get("/")) {
@@ -189,18 +189,27 @@ class Client {
 }  // namespace uestc
 
 int main() {
-  uestc::Config config{};
-  uestc::Client client("http://aaa.uestc.edu.cn");
-
-  uestc::UserInfo user(config.get("username"), config.get("password"), "", "1",
-                       uestc::kEncVer);
-  int interval = std::atoi(config.get("interval").c_str());
-  if (interval <= 0) {
-    interval = 5;
-  };
-  while (true) {
-    client.AuthNetwork(user);
-    usleep(interval * 1000000);
+  auto answer2 = uestc::XEncode("2020", "6359decb953189ff51352a282c61db729c320b9706852335ffc7cec56d016452");
+  for (int i = 0; i < answer2.size(); i++) {
+    printf("0x%02x,", answer2[i]);
   }
+  // auto res = uestc::Sha1("");
+  // std::cout << res << std::endl;
+  // res = uestc::Sha1("2020");
+  // std::cout << res << std::endl;
+  // uestc::Config config{};
+  // uestc::Client client("http://aaa.uestc.edu.cn");
+
+  // uestc::UserInfo user(config.get("username"), config.get("password"),
+  // "", "1",
+  //                      uestc::kEncVer);
+  // int interval = std::atoi(config.get("interval").c_str());
+  // if (interval <= 0) {
+  //   interval = 5;
+  // };
+  // while (true) {
+  //   client.AuthNetwork(user);
+  //   usleep(interval * 1000000);
+  // }
   return 0;
 }

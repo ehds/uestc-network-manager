@@ -39,7 +39,6 @@ std::string HmacMD5(const std::string& data, const std::string& token) {
   assert(mac_length == 16);
   char res[32];
   for (int i = 0; i < 16; i++) {
-    std::cout << std::sprintf(&res[i * 2], "%02x", mac[i]) << std::endl;
     std::sprintf(&res[i * 2], "%02x", mac[i]);
   }
   free(mac);
@@ -156,16 +155,16 @@ std::vector<unsigned char> XEncode(const std::string& msg,
   auto pwd = sencode<true>(msg);
   auto pwdk = sencode<false>(key);
   if (pwdk.size() < 4) {
-    for (size_t i = 4 - pwdk.size(); i >= 0; i--) {
+    for (size_t i = 0; i < 4 - pwdk.size(); i++) {
       pwdk.push_back(0);
     }
   }
-  int64_t n = pwd.size() - 1;
-  int64_t z = pwd[n];
-  int64_t y = pwd[0];
-  int64_t c = 0x86014019 | 0x183639A0;
-  int64_t m = 0, e = 0, p = 0, d = 0;
-  auto q = floor(6 + 52 / (n + 1));
+  size_t n = pwd.size() - 1;
+  uint64_t z = pwd[n];
+  uint64_t y = pwd[0];
+  uint64_t c = 0x86014019 | 0x183639A0;
+  uint64_t m = 0, e = 0, p = 0, d = 0;
+  uint64_t q = floor(6 + 52 / (n + 1));
   while (q > 0) {
     d = d + c & (0x8CE0D9BF | 0x731F2640);
     e = d >> 2 & 3;
