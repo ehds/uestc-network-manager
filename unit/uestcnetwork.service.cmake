@@ -5,7 +5,7 @@ After=network.target
 
 [Service]
 Type=${SYSTEMD_SERVICE_TYPE}
-ExecStart=${CMAKE_INSTALL_PREFIX}/bin/uestc_login
+ExecStart=${CMAKE_INSTALL_PREFIX}/bin/uestcnetwork
 ExecReload=/bin/kill -s USR1 $MAINPID
 WatchdogSec=${WATCHDOG_SEC}
 Restart=always
