@@ -34,7 +34,7 @@ target_sources("uestc_util"
   "util/crypto.cpp"
   "util/config.cpp"
 )
-add_executable(${PROJECT_NAME})
+add_executable(${PROJECT_NAME} "")
 target_sources(${PROJECT_NAME}
   PRIVATE
   "login.cpp"
