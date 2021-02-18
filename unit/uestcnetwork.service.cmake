@@ -7,8 +7,7 @@ After=network.target
 Type=${SYSTEMD_SERVICE_TYPE}
 ExecStart=${CMAKE_INSTALL_PREFIX}/bin/uestcnetwork
 ExecReload=/bin/kill -s USR1 $MAINPID
-WatchdogSec=${WATCHDOG_SEC}
-Restart=always
+Restart=on-failure
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 
 [Install]
