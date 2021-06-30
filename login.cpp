@@ -18,8 +18,7 @@
 #include "util/crypto.h"
 namespace uestc {
 using InfoList = std::vector<std::pair<std::string, std::string> >;
-const std::string kEncVer = "srun_bx1";
-const std::string kDomain = "@dx-uestc";
+std::string kDomain;
 constexpr int N = 200;
 constexpr int TYPE = 1;
 
@@ -176,7 +175,7 @@ class Client {
         std::cout << res->status << res->body << std::endl;
       }
     } else {
-      std::cout << res.error() << std::endl;
+      std::cout << (char*)res.error() << std::endl;
     }
     return false;
   }
@@ -190,10 +189,10 @@ class Client {
 
 int main() {
   uestc::Config config{};
-  uestc::Client client("http://aaa.uestc.edu.cn");
-
-  uestc::UserInfo user(config.get("username"), config.get("password"), "", "1",
-                       uestc::kEncVer);
+  uestc::kDomain=config.get("kDomain");
+  uestc::Client client("http://10.253.0.237");
+  uestc::UserInfo user(config.get("username"), config.get("password"), "", config.get("ac_id"),
+                       config.get("kEncVer"));
   int interval = std::atoi(config.get("interval").c_str());
   if (interval <= 0) {
     interval = 5;
