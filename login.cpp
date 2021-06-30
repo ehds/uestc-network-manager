@@ -190,7 +190,7 @@ class Client {
 int main() {
   uestc::Config config{};
   uestc::kDomain=config.get("kDomain");
-  uestc::Client client("http://10.253.0.237");
+  uestc::Client client("http://aaa.uestc.edu.cn");
   uestc::UserInfo user(config.get("username"), config.get("password"), "", config.get("ac_id"),
                        config.get("kEncVer"));
   int interval = std::atoi(config.get("interval").c_str());
